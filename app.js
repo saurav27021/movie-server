@@ -1,4 +1,9 @@
-const express = require("express");
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+
+dotenv.config();
 
 const app = express();
 const PORT = 3000;
@@ -16,7 +21,15 @@ app.get("/about", (req, res) => {
   res.send("This is the About Page");
 });
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+mongoose
+  .connect(
+    `mongodb+srv://admin:${process.env.MONGODB_PASSWORD}@cluster0.m5hhm5r.mongodb.net/?appName=Cluster0/`,
+  ).then(() =>
+    app.listen(5000, () => {
+      console.log(" CONNECTED TO DATABASE");
+      console.log("Server running on http://localhost:5000");
+    }),
+  )
+  .catch((error) => console.log("Database connection error:", error));
+
+
